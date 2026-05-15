@@ -1,0 +1,25 @@
+venv/
+__pycache__/
+*.pyc
+
+# Raw dataset should not be pushed
+data/raw/*
+!data/raw/.gitkeep
+
+# Processed generated files should not be pushed
+data/processed/*
+!data/processed/.gitkeep
+
+# Trained models should not be pushed
+models/*
+!models/.gitkeep
+
+# Generated figures and metrics should not be pushed
+results/figures/*
+!results/figures/.gitkeep
+
+results/metrics/*
+!results/metrics/.gitkeep
+
+.ipynb_checkpoints/
+.DS_Store
