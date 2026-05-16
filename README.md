@@ -60,6 +60,31 @@ Total: 2000 audio samples
 
 ---
 
+## Exploratory Data Analysis
+
+Before training the models, the dataset was explored visually using a balanced subset of bonafide and spoof audio samples.
+
+### Balanced Subset Distribution
+
+The original ASVspoof 2019 LA training split is imbalanced, with many more spoof samples than bonafide samples.  
+For this baseline experiment, a balanced subset was created with 1,000 bonafide and 1,000 spoof samples.
+
+![Balanced Subset Label Distribution](results/figures/label_distribution_subset.png)
+
+### Bonafide vs Spoof Waveform
+
+The waveform shows how the audio amplitude changes over time.  
+Below is a comparison between one bonafide sample and one spoof sample from the balanced subset.
+
+![Bonafide vs Spoof Waveform](results/figures/bonafide_vs_spoof_waveform.png)
+
+### Bonafide vs Spoof Mel Spectrogram
+
+The mel spectrogram shows how frequency energy changes over time.  
+This representation is useful for audio analysis because it reveals time-frequency patterns that may not be obvious from the raw waveform.
+
+![Bonafide vs Spoof Mel Spectrogram](results/figures/bonafide_vs_spoof_mel_spectrogram.png)
+
 ## Feature Extraction
 
 For each audio file, the following features are extracted:
