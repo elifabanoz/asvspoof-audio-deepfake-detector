@@ -170,10 +170,29 @@ python src/train_mlp.py
 
 After training the models, you can use the prediction script to classify a single audio file as `bonafide` or `spoof`.
 
+#### Bonafide example
+
 Using the PyTorch MLP model:
 
 ```bash
 python src/predict_audio.py "data/raw/ASVspoof2019_LA_train/flac/LA_T_1138215.flac" --model mlp
+```
+
+Example output:
+
+```text
+============================================================
+Audio Deepfake Prediction
+============================================================
+Audio file: data\raw\ASVspoof2019_LA_train\flac\LA_T_1138215.flac
+Model     : mlp
+
+Prediction: bonafide
+Confidence: 1.0000
+
+Class probabilities:
+bonafide: 1.0000
+spoof   : 0.0000
 ```
 
 Using the Random Forest model:
@@ -185,15 +204,23 @@ python src/predict_audio.py "data/raw/ASVspoof2019_LA_train/flac/LA_T_1138215.fl
 Example output:
 
 ```text
+============================================================
+Audio Deepfake Prediction
+============================================================
+Audio file: data\raw\ASVspoof2019_LA_train\flac\LA_T_1138215.flac
+Model     : rf
+
 Prediction: bonafide
-Confidence: 1.0000
+Confidence: 0.5650
 
 Class probabilities:
-bonafide: 1.0000
-spoof   : 0.0000
+bonafide: 0.5650
+spoof   : 0.4350
 ```
 
-You can also test a spoofed audio sample:
+#### Spoof example
+
+Using the PyTorch MLP model:
 
 ```bash
 python src/predict_audio.py "data/raw/ASVspoof2019_LA_train/flac/LA_T_9334813.flac" --model mlp
@@ -202,6 +229,12 @@ python src/predict_audio.py "data/raw/ASVspoof2019_LA_train/flac/LA_T_9334813.fl
 Example output:
 
 ```text
+============================================================
+Audio Deepfake Prediction
+============================================================
+Audio file: data\raw\ASVspoof2019_LA_train\flac\LA_T_9334813.flac
+Model     : mlp
+
 Prediction: spoof
 Confidence: 1.0000
 
@@ -209,6 +242,31 @@ Class probabilities:
 bonafide: 0.0000
 spoof   : 1.0000
 ```
+
+Using the Random Forest model:
+
+```bash
+python src/predict_audio.py "data/raw/ASVspoof2019_LA_train/flac/LA_T_9334813.flac" --model rf
+```
+
+Example output:
+
+```text
+============================================================
+Audio Deepfake Prediction
+============================================================
+Audio file: data\raw\ASVspoof2019_LA_train\flac\LA_T_9334813.flac
+Model     : rf
+
+Prediction: spoof
+Confidence: 0.9050
+
+Class probabilities:
+bonafide: 0.0950
+spoof   : 0.9050
+```
+
+> Note: Confidence values are model probabilities rounded to four decimal places. They should not be interpreted as absolute certainty.
 
 ---
 
