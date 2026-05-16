@@ -1,0 +1,13 @@
+{
+    "model": "RandomForestClassifier",
+    "n_estimators": 200,
+    "test_size": 0.2,
+    "random_state": 42,
+    "accuracy": 0.91,
+    "precision_spoof": 0.9408602150537635,
+    "recall_spoof": 0.875,
+    "f1_spoof": 0.9067357512953368,
+    "train_samples": 1600,
+    "test_samples": 400,
+    "n_features": 120
+}

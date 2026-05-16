@@ -1,0 +1,15 @@
+{
+    "model": "PyTorch MLP",
+    "epochs": 30,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "test_size": 0.2,
+    "random_state": 42,
+    "accuracy": 0.9875,
+    "precision_spoof": 0.9899497487437185,
+    "recall_spoof": 0.985,
+    "f1_spoof": 0.9874686716791979,
+    "train_samples": 1600,
+    "test_samples": 400,
+    "n_features": 120
+}

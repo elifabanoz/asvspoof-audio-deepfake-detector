@@ -14,12 +14,5 @@ data/processed/*
 models/*
 !models/.gitkeep
 
-# Generated figures and metrics should not be pushed
-results/figures/*
-!results/figures/.gitkeep
-
-results/metrics/*
-!results/metrics/.gitkeep
-
 .ipynb_checkpoints/
 .DS_Store
