@@ -37,6 +37,7 @@ FEATURES_NPZ = PROCESSED_DATA_DIR / "features.npz"
 
 RF_MODEL_PATH = MODELS_DIR / "random_forest.joblib"
 MLP_MODEL_PATH = MODELS_DIR / "spoof_detector_mlp.pt"
+MLP_SCALER_PATH = MODELS_DIR / "mlp_scaler.joblib"
 
 METRICS_JSON = METRICS_DIR / "metrics.json"
 CONFUSION_MATRIX_PATH = FIGURES_DIR / "confusion_matrix.png"
