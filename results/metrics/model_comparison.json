@@ -1,0 +1,16 @@
+[
+    {
+        "model": "Random Forest",
+        "accuracy": 0.91,
+        "spoof_precision": 0.9408602150537635,
+        "spoof_recall": 0.875,
+        "spoof_f1": 0.9067357512953368
+    },
+    {
+        "model": "PyTorch MLP",
+        "accuracy": 0.9875,
+        "spoof_precision": 0.9899497487437185,
+        "spoof_recall": 0.985,
+        "spoof_f1": 0.9874686716791979
+    }
+]
