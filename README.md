@@ -69,21 +69,21 @@ Before training the models, the dataset was explored visually using a balanced s
 The original ASVspoof 2019 LA training split is imbalanced, with many more spoof samples than bonafide samples.  
 For this baseline experiment, a balanced subset was created with 1,000 bonafide and 1,000 spoof samples.
 
-![Balanced Subset Label Distribution](results/figures/label_distribution_subset.png)
+Balanced Subset Label Distribution
 
 ### Bonafide vs Spoof Waveform
 
 The waveform shows how the audio amplitude changes over time.  
 Below is a comparison between one bonafide sample and one spoof sample from the balanced subset.
 
-![Bonafide vs Spoof Waveform](results/figures/bonafide_vs_spoof_waveform.png)
+Bonafide vs Spoof Waveform
 
 ### Bonafide vs Spoof Mel Spectrogram
 
 The mel spectrogram shows how frequency energy changes over time.  
 This representation is useful for audio analysis because it reveals time-frequency patterns that may not be obvious from the raw waveform.
 
-![Bonafide vs Spoof Mel Spectrogram](results/figures/bonafide_vs_spoof_mel_spectrogram.png)
+Bonafide vs Spoof Mel Spectrogram
 
 ## Feature Extraction
 
@@ -108,18 +108,20 @@ With `20 MFCCs`, this produces a 120-dimensional feature vector:
 
 The models were trained and evaluated on a balanced 2,000-sample subset of ASVspoof 2019 LA.
 
-| Model | Accuracy | Spoof Precision | Spoof Recall | Spoof F1 |
-|---|---:|---:|---:|---:|
-| Random Forest | 0.9100 | 0.9409 | 0.8750 | 0.9067 |
-| PyTorch MLP | 0.9875 | 0.9899 | 0.9850 | 0.9875 |
+
+| Model         | Accuracy | Spoof Precision | Spoof Recall | Spoof F1 |
+| ------------- | -------- | --------------- | ------------ | -------- |
+| Random Forest | 0.9100   | 0.9409          | 0.8750       | 0.9067   |
+| PyTorch MLP   | 0.9875   | 0.9899          | 0.9850       | 0.9875   |
+
 
 ---
 
-## Dev Set Evaluation
+## Dev and Eval Set Evaluation
 
-After the initial train/test split experiment, I also evaluated the trained models on a separate balanced subset from the ASVspoof 2019 LA development set.
+After the initial train/test split experiment, I evaluated the trained models on separate balanced subsets from the ASVspoof 2019 LA development and evaluation sets.
 
-This gives a more realistic view of model generalization because the dev set was not used during training.
+This gives a more realistic view of model generalization because the dev and eval samples were not used during training.
 
 The balanced dev subset contains:
 
@@ -129,28 +131,54 @@ The balanced dev subset contains:
 Total: 2000 dev samples
 ```
 
-### Train Split vs Dev Subset Results
+The balanced eval subset contains:
 
-| Model | Train Split Accuracy | Dev Subset Accuracy | Dev Spoof Precision | Dev Spoof Recall | Dev Spoof F1 |
-|---|---:|---:|---:|---:|---:|
-| Random Forest | 0.9100 | 0.9040 | 0.9056 | 0.9020 | 0.9038 |
-| PyTorch MLP | 0.9875 | 0.8955 | 0.8407 | 0.9760 | 0.9033 |
+```text
+1000 bonafide samples
+1000 spoof samples
+Total: 2000 eval samples
+```
 
-The Random Forest model remained more stable on the dev subset, while the PyTorch MLP achieved a much higher spoof recall.
+### Train Split vs Dev vs Eval Results
 
-This means that the MLP caught more spoofed samples, but it also classified more bonafide samples as spoof. In security related tasks, high spoof recall can be useful because missing spoofed audio may be more risky than raising a false alarm.
+
+| Model         | Train Split Accuracy | Dev Accuracy | Eval Accuracy | Eval Spoof Precision | Eval Spoof Recall | Eval Spoof F1 |
+| ------------- | -------------------- | ------------ | ------------- | -------------------- | ----------------- | ------------- |
+| Random Forest | 0.9100               | 0.9040       | 0.8840        | 0.9257               | 0.8350            | 0.8780        |
+| PyTorch MLP   | 0.9875               | 0.8955       | 0.8665        | 0.8920               | 0.8340            | 0.8620        |
+
+
+The PyTorch MLP achieved the highest train split accuracy, but its performance dropped more on the dev and eval subsets.
+
+The Random Forest model showed more stable generalization across splits. Its train split accuracy was 0.9100, dev accuracy was 0.9040, and eval accuracy was 0.8840.
+
+This comparison is important because the first train/test split result alone could make the MLP look clearly better. However, the dev and eval results show that the simpler Random Forest baseline generalized more consistently in this experiment.
 
 ### Dev Set Confusion Matrices
 
-![Random Forest Dev Confusion Matrix](results/figures/random_forest_dev_confusion_matrix.png)
+Random Forest Dev Confusion Matrix
 
-![PyTorch MLP Dev Confusion Matrix](results/figures/mlp_dev_confusion_matrix.png)
+PyTorch MLP Dev Confusion Matrix
+
+### Eval Set Confusion Matrices
+
+Random Forest Eval Confusion Matrix
+
+PyTorch MLP Eval Confusion Matrix
+
+### Interpretation
+
+The MLP performed extremely well on the initial train split, but its performance decreased on unseen dev and eval subsets. This may indicate that the model learned patterns that were highly effective on the initial balanced subset but less stable across different ASVspoof splits.
+
+The Random Forest model did not reach the highest initial accuracy, but it remained more consistent across train, dev, and eval subsets.
+
+This is why evaluating only on a single train/test split is not enough. Dev and eval results provide a more realistic picture of how the detector behaves on unseen data.
 
 ## Random Forest Result
 
 The Random Forest baseline achieved strong initial performance using MFCC-based statistical features.
 
-![Random Forest Confusion Matrix](results/figures/random_forest_confusion_matrix.png)
+Random Forest Confusion Matrix
 
 ---
 
@@ -158,13 +186,13 @@ The Random Forest baseline achieved strong initial performance using MFCC-based 
 
 The PyTorch MLP achieved the best performance in this experiment.
 
-![MLP Confusion Matrix](results/figures/mlp_confusion_matrix.png)
+MLP Confusion Matrix
 
 ### Training Curves
 
-![MLP Training Loss](results/figures/mlp_training_loss.png)
+MLP Training Loss
 
-![MLP Test Accuracy](results/figures/mlp_test_accuracy.png)
+MLP Test Accuracy
 
 ---
 
@@ -380,7 +408,6 @@ Important limitations:
 
 Planned improvements:
 
-- Evaluate on ASVspoof eval sets
 - Add CNN-based spectrogram model
 - Add raw-audio model baseline
 - Implement adversarial attacks such as FGSM
