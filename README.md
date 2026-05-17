@@ -380,7 +380,7 @@ Important limitations:
 
 Planned improvements:
 
-- Evaluate on ASVspoof dev and eval sets
+- Evaluate on ASVspoof eval sets
 - Add CNN-based spectrogram model
 - Add raw-audio model baseline
 - Implement adversarial attacks such as FGSM
