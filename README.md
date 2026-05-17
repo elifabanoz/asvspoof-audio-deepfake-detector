@@ -115,6 +115,37 @@ The models were trained and evaluated on a balanced 2,000-sample subset of ASVsp
 
 ---
 
+## Dev Set Evaluation
+
+After the initial train/test split experiment, I also evaluated the trained models on a separate balanced subset from the ASVspoof 2019 LA development set.
+
+This gives a more realistic view of model generalization because the dev set was not used during training.
+
+The balanced dev subset contains:
+
+```text
+1000 bonafide samples
+1000 spoof samples
+Total: 2000 dev samples
+```
+
+### Train Split vs Dev Subset Results
+
+| Model | Train Split Accuracy | Dev Subset Accuracy | Dev Spoof Precision | Dev Spoof Recall | Dev Spoof F1 |
+|---|---:|---:|---:|---:|---:|
+| Random Forest | 0.9100 | 0.9040 | 0.9056 | 0.9020 | 0.9038 |
+| PyTorch MLP | 0.9875 | 0.8955 | 0.8407 | 0.9760 | 0.9033 |
+
+The Random Forest model remained more stable on the dev subset, while the PyTorch MLP achieved a much higher spoof recall.
+
+This means that the MLP caught more spoofed samples, but it also classified more bonafide samples as spoof. In security related tasks, high spoof recall can be useful because missing spoofed audio may be more risky than raising a false alarm.
+
+### Dev Set Confusion Matrices
+
+![Random Forest Dev Confusion Matrix](results/figures/random_forest_dev_confusion_matrix.png)
+
+![PyTorch MLP Dev Confusion Matrix](results/figures/mlp_dev_confusion_matrix.png)
+
 ## Random Forest Result
 
 The Random Forest baseline achieved strong initial performance using MFCC-based statistical features.
