@@ -1,6 +1,6 @@
 import pandas as pd
 
-from config import (
+from src.config import (
     ASVSPOOF_EVAL_DIR,
     ASVSPOOF_EVAL_FLAC_DIR,
     ASVSPOOF_EVAL_LABELS,

@@ -2,7 +2,7 @@ import json
 
 import pandas as pd
 
-from config import METRICS_DIR
+from src.config import METRICS_DIR
 
 
 def load_metrics(file_name: str) -> dict:

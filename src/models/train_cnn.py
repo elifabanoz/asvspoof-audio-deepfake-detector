@@ -18,7 +18,7 @@ from sklearn.metrics import (
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Dataset
 
-from config import (
+from src.config import (
     CNN_MODEL_PATH,
     FIGURES_DIR,
     MEL_TRAIN_FEATURES_NPZ,

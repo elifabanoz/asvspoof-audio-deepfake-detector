@@ -2,7 +2,7 @@ import numpy as np
 import librosa
 from tqdm import tqdm
 
-from config import (
+from src.config import (
     ASVSPOOF_TRAIN_FLAC_DIR,
     FEATURES_NPZ,
     METRICS_DIR,
@@ -11,7 +11,7 @@ from config import (
     SUBSET_CSV,
 )
 
-from utils import get_audio_path, load_subset, save_json
+from src.utils import get_audio_path, load_subset, save_json
 
 
 def extract_features(file_path):

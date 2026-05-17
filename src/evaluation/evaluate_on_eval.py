@@ -15,7 +15,7 @@ from sklearn.metrics import (
     recall_score,
 )
 
-from config import (
+from src.config import (
     EVAL_FEATURES_NPZ,
     RF_MODEL_PATH,
     MLP_MODEL_PATH,
@@ -24,7 +24,7 @@ from config import (
     FIGURES_DIR,
 )
 
-from train_mlp import SpoofDetectorMLP
+from src.models.train_mlp import SpoofDetectorMLP
 
 
 def evaluate_random_forest(X_eval):

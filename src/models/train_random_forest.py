@@ -16,7 +16,7 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 
-from config import (
+from src.config import (
     FEATURES_NPZ,
     RF_MODEL_PATH,
     METRICS_DIR,

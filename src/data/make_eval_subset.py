@@ -1,8 +1,8 @@
 import pandas as pd
 
-from config import (
-    ASVSPOOF_DEV_LABELS,
-    DEV_SUBSET_CSV,
+from src.config import (
+    ASVSPOOF_EVAL_LABELS,
+    EVAL_SUBSET_CSV,
     N_BONAFIDE,
     N_SPOOF,
     RANDOM_STATE,
@@ -11,20 +11,20 @@ from config import (
 
 def main():
     print("=" * 60)
-    print("Creating Balanced ASVspoof Dev Subset")
+    print("Creating Balanced ASVspoof Eval Subset")
     print("=" * 60)
 
-    if not ASVSPOOF_DEV_LABELS.exists():
-        raise FileNotFoundError(f"Dev label file not found: {ASVSPOOF_DEV_LABELS}")
+    if not ASVSPOOF_EVAL_LABELS.exists():
+        raise FileNotFoundError(f"Eval label file not found: {ASVSPOOF_EVAL_LABELS}")
 
     labels_df = pd.read_csv(
-        ASVSPOOF_DEV_LABELS,
+        ASVSPOOF_EVAL_LABELS,
         sep=r"\s+",
         header=None,
         names=["speaker_id", "audio_file", "unused", "system_id", "label"],
     )
 
-    print("Original dev label distribution:")
+    print("Original eval label distribution:")
     print(labels_df["label"].value_counts())
     print()
 
@@ -65,13 +65,13 @@ def main():
         }
     )
 
-    DEV_SUBSET_CSV.parent.mkdir(parents=True, exist_ok=True)
-    subset_df.to_csv(DEV_SUBSET_CSV, index=False)
+    EVAL_SUBSET_CSV.parent.mkdir(parents=True, exist_ok=True)
+    subset_df.to_csv(EVAL_SUBSET_CSV, index=False)
 
-    print("Balanced dev subset created successfully.")
-    print(f"Saved to: {DEV_SUBSET_CSV}")
+    print("Balanced eval subset created successfully.")
+    print(f"Saved to: {EVAL_SUBSET_CSV}")
     print()
-    print("Dev subset label distribution:")
+    print("Eval subset label distribution:")
     print(subset_df["label"].value_counts())
     print()
     print("First 5 rows:")

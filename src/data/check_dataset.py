@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from config import (
+from src.config import (
     ASVSPOOF_TRAIN_DIR,
     ASVSPOOF_TRAIN_FLAC_DIR,
     ASVSPOOF_TRAIN_LABELS,

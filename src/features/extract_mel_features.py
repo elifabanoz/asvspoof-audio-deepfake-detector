@@ -4,7 +4,7 @@ import librosa
 import numpy as np
 from tqdm import tqdm
 
-from config import (
+from src.config import (
     ASVSPOOF_TRAIN_FLAC_DIR,
     ASVSPOOF_DEV_FLAC_DIR,
     ASVSPOOF_EVAL_FLAC_DIR,
@@ -22,7 +22,7 @@ from config import (
     METRICS_DIR,
 )
 
-from utils import get_audio_path, load_subset, save_json
+from src.utils import get_audio_path, load_subset, save_json
 
 
 def pad_or_truncate_spectrogram(mel_db: np.ndarray, max_frames: int) -> np.ndarray:

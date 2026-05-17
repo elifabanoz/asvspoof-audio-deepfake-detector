@@ -14,7 +14,7 @@ from sklearn.metrics import (
     recall_score,
 )
 
-from config import (
+from src.config import (
     CNN_MODEL_PATH,
     MEL_DEV_FEATURES_NPZ,
     MEL_EVAL_FEATURES_NPZ,
@@ -22,7 +22,7 @@ from config import (
     FIGURES_DIR,
 )
 
-from train_cnn import SpectrogramCNN
+from src.models.train_cnn import SpectrogramCNN
 
 
 def load_cnn_model(device):

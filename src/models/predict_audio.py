@@ -5,15 +5,15 @@ import joblib
 import numpy as np
 import torch
 
-from config import (
+from src.config import (
     RF_MODEL_PATH,
     MLP_MODEL_PATH,
     MLP_SCALER_PATH,
 )
 
-from extract_features import extract_features
-from train_mlp import SpoofDetectorMLP
-from utils import ID_TO_LABEL
+from src.features.extract_features import extract_features
+from src.models.train_mlp import SpoofDetectorMLP
+from src.utils import ID_TO_LABEL
 
 
 def predict_with_random_forest(audio_path: Path):

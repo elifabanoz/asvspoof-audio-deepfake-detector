@@ -4,14 +4,14 @@ import pandas as pd
 import librosa
 import librosa.display
 
-from config import (
+from src.config import (
     ASVSPOOF_TRAIN_FLAC_DIR,
     FIGURES_DIR,
     SAMPLE_RATE,
     SUBSET_CSV,
 )
 
-from utils import get_audio_path, load_subset
+from src.utils import get_audio_path, load_subset
 
 
 def load_audio(audio_file_name: str):
