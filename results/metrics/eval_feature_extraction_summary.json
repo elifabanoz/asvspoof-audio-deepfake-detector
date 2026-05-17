@@ -1,0 +1,10 @@
+{
+    "dataset": "ASVspoof 2019 LA eval subset",
+    "sample_rate": 16000,
+    "n_mfcc": 20,
+    "n_samples": 2000,
+    "n_features": 120,
+    "n_bonafide": 1000,
+    "n_spoof": 1000,
+    "output_file": "C:\\Users\\aysel\\asvspoof-audio-deepfake-detector\\data\\processed\\eval_features.npz"
+}

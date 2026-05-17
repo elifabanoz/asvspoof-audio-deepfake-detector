@@ -1,0 +1,11 @@
+{
+    "model": "PyTorch MLP",
+    "dataset": "ASVspoof 2019 LA eval balanced subset",
+    "accuracy": 0.8665,
+    "precision_spoof": 0.8919786096256684,
+    "recall_spoof": 0.834,
+    "f1_spoof": 0.862015503875969,
+    "n_samples": 2000,
+    "n_bonafide": 1000,
+    "n_spoof": 1000
+}

@@ -1,0 +1,11 @@
+{
+    "model": "Random Forest",
+    "dataset": "ASVspoof 2019 LA eval balanced subset",
+    "accuracy": 0.884,
+    "precision_spoof": 0.9257206208425721,
+    "recall_spoof": 0.835,
+    "f1_spoof": 0.8780231335436383,
+    "n_samples": 2000,
+    "n_bonafide": 1000,
+    "n_spoof": 1000
+}

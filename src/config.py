@@ -50,3 +50,12 @@ ASVSPOOF_DEV_LABELS = ASVSPOOF_PROTOCOL_DIR / "ASVspoof2019.LA.cm.dev.trl.txt"
 # Dev output files
 DEV_SUBSET_CSV = PROCESSED_DATA_DIR / "dev_subset_2000.csv"
 DEV_FEATURES_NPZ = PROCESSED_DATA_DIR / "dev_features.npz"
+
+# ASVspoof eval paths
+ASVSPOOF_EVAL_DIR = RAW_DATA_DIR / "ASVspoof2019_LA_eval"
+ASVSPOOF_EVAL_FLAC_DIR = ASVSPOOF_EVAL_DIR / "flac"
+ASVSPOOF_EVAL_LABELS = ASVSPOOF_PROTOCOL_DIR / "ASVspoof2019.LA.cm.eval.trl.txt"
+
+# Eval output files
+EVAL_SUBSET_CSV = PROCESSED_DATA_DIR / "eval_subset_2000.csv"
+EVAL_FEATURES_NPZ = PROCESSED_DATA_DIR / "eval_features.npz"
