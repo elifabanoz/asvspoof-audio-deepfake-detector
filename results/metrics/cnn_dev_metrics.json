@@ -1,0 +1,12 @@
+{
+    "model": "Spectrogram CNN",
+    "split": "dev",
+    "dataset": "ASVspoof 2019 LA dev balanced subset",
+    "accuracy": 0.9815,
+    "precision_spoof": 0.97252208047105,
+    "recall_spoof": 0.991,
+    "f1_spoof": 0.9816740960871718,
+    "n_samples": 2000,
+    "n_bonafide": 1000,
+    "n_spoof": 1000
+}

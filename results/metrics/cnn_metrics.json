@@ -1,0 +1,23 @@
+{
+    "model": "Spectrogram CNN",
+    "feature_type": "mel_spectrogram",
+    "epochs": 20,
+    "best_epoch": 19,
+    "best_val_accuracy": 0.9925,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "test_size": 0.2,
+    "random_state": 42,
+    "accuracy": 0.9925,
+    "precision_spoof": 0.9900497512437811,
+    "recall_spoof": 0.995,
+    "f1_spoof": 0.9925187032418953,
+    "train_samples": 1600,
+    "validation_samples": 400,
+    "input_shape": [
+        1,
+        128,
+        128
+    ]
+}

@@ -59,3 +59,16 @@ ASVSPOOF_EVAL_LABELS = ASVSPOOF_PROTOCOL_DIR / "ASVspoof2019.LA.cm.eval.trl.txt"
 # Eval output files
 EVAL_SUBSET_CSV = PROCESSED_DATA_DIR / "eval_subset_2000.csv"
 EVAL_FEATURES_NPZ = PROCESSED_DATA_DIR / "eval_features.npz"
+
+# Mel spectrogram settings for CNN
+MEL_N_MELS = 128
+MEL_MAX_FRAMES = 128
+MEL_N_FFT = 1024
+MEL_HOP_LENGTH = 512
+
+MEL_TRAIN_FEATURES_NPZ = PROCESSED_DATA_DIR / "mel_train_features.npz"
+MEL_DEV_FEATURES_NPZ = PROCESSED_DATA_DIR / "mel_dev_features.npz"
+MEL_EVAL_FEATURES_NPZ = PROCESSED_DATA_DIR / "mel_eval_features.npz"
+
+# CNN model path
+CNN_MODEL_PATH = MODELS_DIR / "spectrogram_cnn.pt"
