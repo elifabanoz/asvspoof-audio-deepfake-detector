@@ -41,3 +41,12 @@ MLP_SCALER_PATH = MODELS_DIR / "mlp_scaler.joblib"
 
 METRICS_JSON = METRICS_DIR / "metrics.json"
 CONFUSION_MATRIX_PATH = FIGURES_DIR / "confusion_matrix.png"
+
+# ASVspoof dev paths
+ASVSPOOF_DEV_DIR = RAW_DATA_DIR / "ASVspoof2019_LA_dev"
+ASVSPOOF_DEV_FLAC_DIR = ASVSPOOF_DEV_DIR / "flac"
+ASVSPOOF_DEV_LABELS = ASVSPOOF_PROTOCOL_DIR / "ASVspoof2019.LA.cm.dev.trl.txt"
+
+# Dev output files
+DEV_SUBSET_CSV = PROCESSED_DATA_DIR / "dev_subset_2000.csv"
+DEV_FEATURES_NPZ = PROCESSED_DATA_DIR / "dev_features.npz"
