@@ -1,0 +1,20 @@
+{
+    "model": "Adversarially Trained Spectrogram CNN",
+    "feature_type": "mel_spectrogram",
+    "defense": "FGSM adversarial training",
+    "adversarial_training_epsilon": 0.003,
+    "epochs": 20,
+    "best_epoch": 18,
+    "best_val_accuracy": 0.995,
+    "accuracy": 0.995,
+    "precision_spoof": 0.995,
+    "recall_spoof": 0.995,
+    "f1_spoof": 0.995,
+    "train_samples": 1600,
+    "validation_samples": 400,
+    "input_shape": [
+        1,
+        128,
+        128
+    ]
+}

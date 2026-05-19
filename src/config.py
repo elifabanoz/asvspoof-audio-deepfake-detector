@@ -72,3 +72,6 @@ MEL_EVAL_FEATURES_NPZ = PROCESSED_DATA_DIR / "mel_eval_features.npz"
 
 # CNN model path
 CNN_MODEL_PATH = MODELS_DIR / "spectrogram_cnn.pt"
+
+# Adversarially trained CNN model path
+ADV_CNN_MODEL_PATH = MODELS_DIR / "spectrogram_cnn_adversarial.pt"
