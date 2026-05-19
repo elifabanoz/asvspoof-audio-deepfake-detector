@@ -1,16 +1,32 @@
 [
     {
-        "model": "Random Forest",
-        "accuracy": 0.91,
-        "spoof_precision": 0.9408602150537635,
-        "spoof_recall": 0.875,
-        "spoof_f1": 0.9067357512953368
+        "model":"Random Forest",
+        "feature_type":"MFCC statistics",
+        "train_accuracy":0.91,
+        "dev_accuracy":0.904,
+        "eval_accuracy":0.884,
+        "eval_spoof_precision":0.9257206208,
+        "eval_spoof_recall":0.835,
+        "eval_spoof_f1":0.8780231335
     },
     {
-        "model": "PyTorch MLP",
-        "accuracy": 0.9875,
-        "spoof_precision": 0.9899497487437185,
-        "spoof_recall": 0.985,
-        "spoof_f1": 0.9874686716791979
+        "model":"PyTorch MLP",
+        "feature_type":"MFCC statistics",
+        "train_accuracy":0.9875,
+        "dev_accuracy":0.8955,
+        "eval_accuracy":0.8665,
+        "eval_spoof_precision":0.8919786096,
+        "eval_spoof_recall":0.834,
+        "eval_spoof_f1":0.8620155039
+    },
+    {
+        "model":"Spectrogram CNN",
+        "feature_type":"Mel spectrogram",
+        "train_accuracy":0.9925,
+        "dev_accuracy":0.9815,
+        "eval_accuracy":0.9175,
+        "eval_spoof_precision":0.9815455594,
+        "eval_spoof_recall":0.851,
+        "eval_spoof_f1":0.9116229245
     }
 ]
