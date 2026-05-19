@@ -14,6 +14,7 @@ from src.config import (
     MEL_EVAL_FEATURES_NPZ,
     METRICS_DIR,
     MULTI_EPS_ADV_CNN_MODEL_PATH,
+    PGD_ADV_CNN_MODEL_PATH,
 )
 
 from src.models.train_cnn import SpectrogramCNN
@@ -121,7 +122,7 @@ def evaluate_model_under_pgd(
 def save_accuracy_plot(df):
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-    output_path = FIGURES_DIR / "pgd_three_model_accuracy_comparison.png"
+    output_path = FIGURES_DIR / "pgd_four_model_accuracy_comparison.png"
 
     plt.figure(figsize=(9, 5))
 
@@ -150,7 +151,7 @@ def save_accuracy_plot(df):
 def save_spoof_recall_plot(df):
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-    output_path = FIGURES_DIR / "pgd_three_model_spoof_recall_comparison.png"
+    output_path = FIGURES_DIR / "pgd_four_model_spoof_recall_comparison.png"
 
     plt.figure(figsize=(9, 5))
 
@@ -203,11 +204,13 @@ def main():
     clean_model = load_model(CNN_MODEL_PATH, device)
     single_eps_adv_model = load_model(ADV_CNN_MODEL_PATH, device)
     multi_eps_adv_model = load_model(MULTI_EPS_ADV_CNN_MODEL_PATH, device)
+    pgd_adv_model = load_model(PGD_ADV_CNN_MODEL_PATH, device)
 
     model_configs = [
         ("Clean CNN", clean_model),
         ("Single-Epsilon Adv CNN", single_eps_adv_model),
         ("Multi-Epsilon Adv CNN", multi_eps_adv_model),
+        ("PGD Adv CNN", pgd_adv_model),
     ]
 
     attack_configs = [
@@ -272,8 +275,8 @@ def main():
 
     METRICS_DIR.mkdir(parents=True, exist_ok=True)
 
-    csv_path = METRICS_DIR / "pgd_three_model_defense_comparison.csv"
-    json_path = METRICS_DIR / "pgd_three_model_defense_comparison.json"
+    csv_path = METRICS_DIR / "pgd_four_model_defense_comparison.csv"
+    json_path = METRICS_DIR / "pgd_four_model_defense_comparison.json"
 
     df.to_csv(csv_path, index=False)
 

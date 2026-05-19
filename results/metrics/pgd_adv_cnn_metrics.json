@@ -1,0 +1,22 @@
+{
+    "model": "PGD Adversarially Trained Spectrogram CNN",
+    "feature_type": "mel_spectrogram",
+    "defense": "random-start PGD adversarial training",
+    "pgd_training_epsilon": 0.005,
+    "pgd_training_alpha": 0.00125,
+    "pgd_training_steps": 5,
+    "epochs": 12,
+    "best_epoch": 12,
+    "best_val_accuracy": 0.9525,
+    "accuracy": 0.9525,
+    "precision_spoof": 0.9891891891891892,
+    "recall_spoof": 0.915,
+    "f1_spoof": 0.9506493506493506,
+    "train_samples": 1600,
+    "validation_samples": 400,
+    "input_shape": [
+        1,
+        128,
+        128
+    ]
+}
