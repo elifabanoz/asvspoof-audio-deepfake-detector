@@ -10,6 +10,7 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
 from src.config import (
     CNN_MODEL_PATH,
     ADV_CNN_MODEL_PATH,
+    MULTI_EPS_ADV_CNN_MODEL_PATH,
     FIGURES_DIR,
     MEL_EVAL_FEATURES_NPZ,
     METRICS_DIR,
@@ -47,7 +48,6 @@ def fgsm_attack(model, X_batch, y_batch, epsilon, criterion):
 
 def evaluate_model_under_fgsm(model, X, y, epsilon, device, batch_size=32):
     criterion = nn.CrossEntropyLoss()
-
     predictions = []
 
     for start_idx in range(0, len(X), batch_size):
@@ -87,9 +87,9 @@ def evaluate_model_under_fgsm(model, X, y, epsilon, device, batch_size=32):
 def save_accuracy_comparison_plot(df):
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-    output_path = FIGURES_DIR / "fgsm_defense_accuracy_comparison.png"
+    output_path = FIGURES_DIR / "fgsm_three_model_accuracy_comparison.png"
 
-    plt.figure(figsize=(8, 5))
+    plt.figure(figsize=(9, 5))
 
     for model_name in df["model"].unique():
         model_df = df[df["model"] == model_name]
@@ -102,7 +102,7 @@ def save_accuracy_comparison_plot(df):
 
     plt.xlabel("FGSM epsilon")
     plt.ylabel("Accuracy")
-    plt.title("Clean CNN vs Adversarially Trained CNN Under FGSM")
+    plt.title("CNN Defense Comparison Under FGSM")
     plt.ylim(0, 1.05)
     plt.legend()
     plt.tight_layout()
@@ -115,9 +115,9 @@ def save_accuracy_comparison_plot(df):
 def save_spoof_recall_comparison_plot(df):
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-    output_path = FIGURES_DIR / "fgsm_defense_spoof_recall_comparison.png"
+    output_path = FIGURES_DIR / "fgsm_three_model_spoof_recall_comparison.png"
 
-    plt.figure(figsize=(8, 5))
+    plt.figure(figsize=(9, 5))
 
     for model_name in df["model"].unique():
         model_df = df[df["model"] == model_name]
@@ -130,7 +130,7 @@ def save_spoof_recall_comparison_plot(df):
 
     plt.xlabel("FGSM epsilon")
     plt.ylabel("Spoof Recall")
-    plt.title("Spoof Recall Under FGSM Attack")
+    plt.title("Spoof Recall Defense Comparison Under FGSM")
     plt.ylim(0, 1.05)
     plt.legend()
     plt.tight_layout()
@@ -142,7 +142,7 @@ def save_spoof_recall_comparison_plot(df):
 
 def main():
     print("=" * 60)
-    print("Evaluating Adversarial Training Defense")
+    print("Evaluating CNN Adversarial Defense Strategies")
     print("=" * 60)
 
     if not MEL_EVAL_FEATURES_NPZ.exists():
@@ -164,16 +164,18 @@ def main():
     print()
 
     clean_model = load_model(CNN_MODEL_PATH, device)
-    adv_model = load_model(ADV_CNN_MODEL_PATH, device)
+    single_eps_adv_model = load_model(ADV_CNN_MODEL_PATH, device)
+    multi_eps_adv_model = load_model(MULTI_EPS_ADV_CNN_MODEL_PATH, device)
 
     epsilons = [0.0, 0.001, 0.003, 0.005, 0.01, 0.03, 0.05, 0.1]
 
-    all_results = []
-
     model_configs = [
         ("Clean CNN", clean_model),
-        ("Adversarially Trained CNN", adv_model),
+        ("Single-Epsilon Adv CNN", single_eps_adv_model),
+        ("Multi-Epsilon Adv CNN", multi_eps_adv_model),
     ]
+
+    all_results = []
 
     for model_name, model in model_configs:
         print("-" * 60)
@@ -204,7 +206,6 @@ def main():
 
     df = pd.DataFrame(all_results)
 
-    # Put model column first
     df = df[
         [
             "model",
@@ -218,8 +219,8 @@ def main():
 
     METRICS_DIR.mkdir(parents=True, exist_ok=True)
 
-    csv_path = METRICS_DIR / "fgsm_defense_comparison.csv"
-    json_path = METRICS_DIR / "fgsm_defense_comparison.json"
+    csv_path = METRICS_DIR / "fgsm_three_model_defense_comparison.csv"
+    json_path = METRICS_DIR / "fgsm_three_model_defense_comparison.json"
 
     df.to_csv(csv_path, index=False)
 
@@ -230,7 +231,7 @@ def main():
     spoof_recall_plot_path = save_spoof_recall_comparison_plot(df)
 
     print("=" * 60)
-    print("Defense Evaluation Summary")
+    print("Three-Model Defense Evaluation Summary")
     print("=" * 60)
 
     print(df.to_string(index=False))

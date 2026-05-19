@@ -75,3 +75,6 @@ CNN_MODEL_PATH = MODELS_DIR / "spectrogram_cnn.pt"
 
 # Adversarially trained CNN model path
 ADV_CNN_MODEL_PATH = MODELS_DIR / "spectrogram_cnn_adversarial.pt"
+
+# Multi-epsilon adversarially trained CNN model path
+MULTI_EPS_ADV_CNN_MODEL_PATH = MODELS_DIR / "spectrogram_cnn_multi_epsilon_adversarial.pt"

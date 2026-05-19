@@ -1,0 +1,194 @@
+[
+    {
+        "epsilon": 0.0,
+        "accuracy": 0.9175,
+        "spoof_precision": 0.9815455594002307,
+        "spoof_recall": 0.851,
+        "spoof_f1": 0.9116229244777718,
+        "model": "Clean CNN"
+    },
+    {
+        "epsilon": 0.001,
+        "accuracy": 0.864,
+        "spoof_precision": 0.9364508393285371,
+        "spoof_recall": 0.781,
+        "spoof_f1": 0.8516902944383861,
+        "model": "Clean CNN"
+    },
+    {
+        "epsilon": 0.003,
+        "accuracy": 0.6345,
+        "spoof_precision": 0.6335650446871897,
+        "spoof_recall": 0.638,
+        "spoof_f1": 0.635774788241156,
+        "model": "Clean CNN"
+    },
+    {
+        "epsilon": 0.005,
+        "accuracy": 0.382,
+        "spoof_precision": 0.4056,
+        "spoof_recall": 0.507,
+        "spoof_f1": 0.45066666666666666,
+        "model": "Clean CNN"
+    },
+    {
+        "epsilon": 0.01,
+        "accuracy": 0.1465,
+        "spoof_precision": 0.2227450980392157,
+        "spoof_recall": 0.284,
+        "spoof_f1": 0.24967032967032968,
+        "model": "Clean CNN"
+    },
+    {
+        "epsilon": 0.03,
+        "accuracy": 0.0575,
+        "spoof_precision": 0.1031390134529148,
+        "spoof_recall": 0.115,
+        "spoof_f1": 0.10874704491725769,
+        "model": "Clean CNN"
+    },
+    {
+        "epsilon": 0.05,
+        "accuracy": 0.046,
+        "spoof_precision": 0.08424908424908426,
+        "spoof_recall": 0.092,
+        "spoof_f1": 0.08795411089866156,
+        "model": "Clean CNN"
+    },
+    {
+        "epsilon": 0.1,
+        "accuracy": 0.058,
+        "spoof_precision": 0.1039426523297491,
+        "spoof_recall": 0.116,
+        "spoof_f1": 0.10964083175803403,
+        "model": "Clean CNN"
+    },
+    {
+        "epsilon": 0.0,
+        "accuracy": 0.928,
+        "spoof_precision": 0.9808988764044944,
+        "spoof_recall": 0.873,
+        "spoof_f1": 0.9238095238095239,
+        "model": "Single-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.001,
+        "accuracy": 0.914,
+        "spoof_precision": 0.9736842105263158,
+        "spoof_recall": 0.851,
+        "spoof_f1": 0.9082177161152615,
+        "model": "Single-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.003,
+        "accuracy": 0.8795,
+        "spoof_precision": 0.9357060849598163,
+        "spoof_recall": 0.815,
+        "spoof_f1": 0.8711918760021379,
+        "model": "Single-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.005,
+        "accuracy": 0.816,
+        "spoof_precision": 0.8449781659388647,
+        "spoof_recall": 0.774,
+        "spoof_f1": 0.8079331941544885,
+        "model": "Single-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.01,
+        "accuracy": 0.564,
+        "spoof_precision": 0.5545144804088586,
+        "spoof_recall": 0.651,
+        "spoof_f1": 0.5988960441582337,
+        "model": "Single-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.03,
+        "accuracy": 0.138,
+        "spoof_precision": 0.21630094043887146,
+        "spoof_recall": 0.276,
+        "spoof_f1": 0.24253075571177504,
+        "model": "Single-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.05,
+        "accuracy": 0.085,
+        "spoof_precision": 0.1452991452991453,
+        "spoof_recall": 0.17,
+        "spoof_f1": 0.15668202764976957,
+        "model": "Single-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.1,
+        "accuracy": 0.079,
+        "spoof_precision": 0.13644214162348878,
+        "spoof_recall": 0.158,
+        "spoof_f1": 0.1464318813716404,
+        "model": "Single-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.0,
+        "accuracy": 0.9295,
+        "spoof_precision": 0.9653304442036836,
+        "spoof_recall": 0.891,
+        "spoof_f1": 0.9266770670826833,
+        "model": "Multi-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.001,
+        "accuracy": 0.9165,
+        "spoof_precision": 0.9541984732824428,
+        "spoof_recall": 0.875,
+        "spoof_f1": 0.9128847157016171,
+        "model": "Multi-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.003,
+        "accuracy": 0.891,
+        "spoof_precision": 0.9177350427350427,
+        "spoof_recall": 0.859,
+        "spoof_f1": 0.887396694214876,
+        "model": "Multi-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.005,
+        "accuracy": 0.844,
+        "spoof_precision": 0.8474747474747475,
+        "spoof_recall": 0.839,
+        "spoof_f1": 0.84321608040201,
+        "model": "Multi-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.01,
+        "accuracy": 0.706,
+        "spoof_precision": 0.673109243697479,
+        "spoof_recall": 0.801,
+        "spoof_f1": 0.7315068493150685,
+        "model": "Multi-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.03,
+        "accuracy": 0.319,
+        "spoof_precision": 0.384418901660281,
+        "spoof_recall": 0.602,
+        "spoof_f1": 0.4692127825409197,
+        "model": "Multi-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.05,
+        "accuracy": 0.2,
+        "spoof_precision": 0.2857142857142857,
+        "spoof_recall": 0.4,
+        "spoof_f1": 0.3333333333333333,
+        "model": "Multi-Epsilon Adv CNN"
+    },
+    {
+        "epsilon": 0.1,
+        "accuracy": 0.128,
+        "spoof_precision": 0.20382165605095542,
+        "spoof_recall": 0.256,
+        "spoof_f1": 0.22695035460992907,
+        "model": "Multi-Epsilon Adv CNN"
+    }
+]
