@@ -80,7 +80,7 @@ The original ASVspoof 2019 LA training split is imbalanced, with many more spoof
 
 For this baseline experiment, a balanced subset was created with 1,000 bonafide and 1,000 spoof samples.
 
-Balanced Subset Label Distribution
+![Balanced Subset Label Distribution](results/figures/label_distribution_subset.png)
 
 ### Bonafide vs Spoof Waveform
 
@@ -88,7 +88,7 @@ The waveform shows how the audio amplitude changes over time.
 
 Below is a comparison between one bonafide sample and one spoof sample from the balanced subset.
 
-Bonafide vs Spoof Waveform
+![Bonafide vs Spoof Waveform](results/figures/bonafide_vs_spoof_waveform.png)
 
 ### Bonafide vs Spoof Mel Spectrogram
 
@@ -96,7 +96,7 @@ The mel spectrogram shows how frequency energy changes over time.
 
 This representation is useful for audio analysis because it reveals time-frequency patterns that may not be obvious from the raw waveform.
 
-Bonafide vs Spoof Mel Spectrogram
+![Bonafide vs Spoof Mel Spectrogram](results/figures/bonafide_vs_spoof_mel_spectrogram.png)
 
 ---
 
@@ -219,27 +219,27 @@ This script generates:
 - `results/figures/model_accuracy_comparison.png`
 - `results/figures/eval_spoof_metrics_comparison.png`
 
-Model Accuracy Comparison
+![Model Accuracy Comparison](results/figures/model_accuracy_comparison.png)
 
-Eval Spoof Metrics Comparison
+![Eval Spoof Metrics Comparison](results/figures/eval_spoof_metrics_comparison.png)
 
 ---
 
 ### Dev Set Confusion Matrices
 
-Random Forest Dev Confusion Matrix
+![Random Forest Dev Confusion Matrix](results/figures/random_forest_dev_confusion_matrix.png)
 
-PyTorch MLP Dev Confusion Matrix
+![PyTorch MLP Dev Confusion Matrix](results/figures/mlp_dev_confusion_matrix.png)
 
-CNN Dev Confusion Matrix
+![CNN Dev Confusion Matrix](results/figures/cnn_dev_confusion_matrix.png)
 
 ### Eval Set Confusion Matrices
 
-Random Forest Eval Confusion Matrix
+![Random Forest Eval Confusion Matrix](results/figures/random_forest_eval_confusion_matrix.png)
 
-PyTorch MLP Eval Confusion Matrix
+![PyTorch MLP Eval Confusion Matrix](results/figures/mlp_eval_confusion_matrix.png)
 
-CNN Eval Confusion Matrix
+![CNN Eval Confusion Matrix](results/figures/cnn_eval_confusion_matrix.png)
 
 ---
 
@@ -247,7 +247,7 @@ CNN Eval Confusion Matrix
 
 The Random Forest baseline achieved strong initial performance using MFCC-based statistical features.
 
-Random Forest Confusion Matrix
+![Random Forest Confusion Matrix](results/figures/random_forest_confusion_matrix.png)
 
 ---
 
@@ -255,13 +255,13 @@ Random Forest Confusion Matrix
 
 The PyTorch MLP achieved strong train split performance using MFCC-based statistical features.
 
-MLP Confusion Matrix
+![MLP Confusion Matrix](results/figures/mlp_confusion_matrix.png)
 
 ### Training Curves
 
-MLP Training Loss
+![MLP Training Loss](results/figures/mlp_training_loss.png)
 
-MLP Test Accuracy
+![MLP Test Accuracy](results/figures/mlp_test_accuracy.png)
 
 ---
 
@@ -285,13 +285,13 @@ The CNN achieved the best overall performance in this project.
 | Spoof F1                        | 0.9925 |
 
 
-CNN Confusion Matrix
+![CNN Confusion Matrix](results/figures/cnn_confusion_matrix.png)
 
 ### CNN Training Curves
 
-CNN Training Loss
+![CNN Training Loss](results/figures/cnn_training_loss.png)
 
-CNN Validation Accuracy
+![CNN Validation Accuracy](results/figures/cnn_validation_accuracy.png)
 
 ### CNN Dev and Eval Results
 
@@ -307,6 +307,39 @@ The CNN generalized better than the MFCC-based MLP on the dev and eval subsets. 
 Still, the eval spoof recall was lower than the dev spoof recall. This shows that the eval subset was more challenging and that the model can still be improved.
 
 ---
+
+## Adversarial Robustness: FGSM Attack
+
+After evaluating the Spectrogram CNN on the balanced eval subset, I tested its robustness against a basic adversarial attack: Fast Gradient Sign Method (FGSM).
+
+In this experiment, FGSM perturbations were applied to the normalized mel spectrogram tensors used by the CNN.
+
+This is a feature-space adversarial robustness test, not a raw waveform attack.
+
+### FGSM Results on Eval Subset
+
+| Epsilon | Accuracy | Spoof Precision | Spoof Recall | Spoof F1 |
+|---:|---:|---:|---:|---:|
+| 0.000 | 0.9175 | 0.9815 | 0.8510 | 0.9116 |
+| 0.001 | 0.8640 | 0.9365 | 0.7810 | 0.8517 |
+| 0.003 | 0.6345 | 0.6336 | 0.6380 | 0.6358 |
+| 0.005 | 0.3820 | 0.4056 | 0.5070 | 0.4507 |
+| 0.010 | 0.1465 | 0.2227 | 0.2840 | 0.2497 |
+| 0.030 | 0.0575 | 0.1031 | 0.1150 | 0.1087 |
+| 0.050 | 0.0460 | 0.0842 | 0.0920 | 0.0880 |
+| 0.100 | 0.0580 | 0.1039 | 0.1160 | 0.1096 |
+
+![FGSM CNN Accuracy Drop](results/figures/fgsm_cnn_accuracy_drop.png)
+
+![FGSM CNN Spoof Recall Drop](results/figures/fgsm_cnn_spoof_recall_drop.png)
+
+The CNN performed well on the clean eval subset, reaching 0.9175 accuracy. However, its performance dropped sharply under FGSM perturbations.
+
+At epsilon 0.003, accuracy decreased from 0.9175 to 0.6345. At epsilon 0.005, accuracy dropped further to 0.3820.
+
+This shows that high clean accuracy does not necessarily mean the model is robust against adversarial perturbations. For security-related machine learning systems, robustness testing is important in addition to standard accuracy evaluation.
+
+--- 
 
 ## Installation
 
@@ -388,7 +421,13 @@ python -m src.evaluation.evaluate_on_eval
 python -m src.evaluation.evaluate_cnn_on_dev_eval
 ```
 
-### 7. Predict a single audio file
+### 7. Run FGSM adversarial attack evaluation
+
+```bash
+python -m src.attacks.fgsm_attack
+```
+
+### 8. Predict a single audio file
 
 After training the models, you can use the prediction script to classify a single audio file as `bonafide` or `spoof`.
 
@@ -535,6 +574,10 @@ asvspoof-audio-deepfake-detector/
 │   │   ├── train_mlp.py
 │   │   ├── train_cnn.py
 │   │   └── predict_audio.py
+│   │   
+│   ├── attacks/
+│   │   ├── __init__.py
+│   │   └── fgsm_attack.py
 │   │
 │   ├── evaluation/
 │   │   ├── __init__.py
@@ -566,17 +609,17 @@ Important limitations:
 - Dev and eval results are based on balanced subsets, not full official ASVspoof scoring.
 - The project reports accuracy, precision, recall, and F1, but does not yet report official ASVspoof metrics such as EER or t-DCF.
 - The CNN improves generalization, but the eval spoof recall is still not perfect.
-- The model has not yet been tested against adversarial audio attacks.
+- The model was tested with FGSM perturbations on normalized mel spectrogram tensors, but it has not yet been tested with raw waveform-level adversarial audio attacks.
 
 ---
 
 ## Planned Improvements
 
 - Add raw-audio model baseline
-- Implement adversarial attacks such as FGSM
 - Add adversarial training defense
 - Evaluate robustness under noise and audio transformations
-- Write a follow-up article about adversarial audio attacks
+- Test raw waveform-level adversarial attacks
+- Write a follow-up article about CNN and adversarial robustness
 
 ---
 
