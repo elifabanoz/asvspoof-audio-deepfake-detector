@@ -80,7 +80,7 @@ The original ASVspoof 2019 LA training split is imbalanced, with many more spoof
 
 For this baseline experiment, a balanced subset was created with 1,000 bonafide and 1,000 spoof samples.
 
-![Balanced Subset Label Distribution](results/figures/label_distribution_subset.png)
+Balanced Subset Label Distribution
 
 ### Bonafide vs Spoof Waveform
 
@@ -88,7 +88,7 @@ The waveform shows how the audio amplitude changes over time.
 
 Below is a comparison between one bonafide sample and one spoof sample from the balanced subset.
 
-![Bonafide vs Spoof Waveform](results/figures/bonafide_vs_spoof_waveform.png)
+Bonafide vs Spoof Waveform
 
 ### Bonafide vs Spoof Mel Spectrogram
 
@@ -96,7 +96,7 @@ The mel spectrogram shows how frequency energy changes over time.
 
 This representation is useful for audio analysis because it reveals time-frequency patterns that may not be obvious from the raw waveform.
 
-![Bonafide vs Spoof Mel Spectrogram](results/figures/bonafide_vs_spoof_mel_spectrogram.png)
+Bonafide vs Spoof Mel Spectrogram
 
 ---
 
@@ -154,11 +154,13 @@ These features are used by:
 
 The models were first trained and evaluated using a balanced 2,000-sample train subset with an 80/20 train-validation split.
 
-| Model | Feature Type | Train Split Accuracy | Spoof Precision | Spoof Recall | Spoof F1 |
-|---|---|---:|---:|---:|---:|
-| Random Forest | MFCC statistics | 0.9100 | 0.9409 | 0.8750 | 0.9067 |
-| PyTorch MLP | MFCC statistics | 0.9875 | 0.9899 | 0.9850 | 0.9875 |
-| Spectrogram CNN | Mel spectrogram | 0.9925 | 0.9900 | 0.9950 | 0.9925 |
+
+| Model           | Feature Type    | Train Split Accuracy | Spoof Precision | Spoof Recall | Spoof F1 |
+| --------------- | --------------- | -------------------- | --------------- | ------------ | -------- |
+| Random Forest   | MFCC statistics | 0.9100               | 0.9409          | 0.8750       | 0.9067   |
+| PyTorch MLP     | MFCC statistics | 0.9875               | 0.9899          | 0.9850       | 0.9875   |
+| Spectrogram CNN | Mel spectrogram | 0.9925               | 0.9900          | 0.9950       | 0.9925   |
+
 
 The Spectrogram CNN achieved the strongest initial train split result.
 
@@ -188,11 +190,13 @@ Total: 2000 eval samples
 
 ### Train Split vs Dev vs Eval Results
 
-| Model | Feature Type | Train Split Accuracy | Dev Accuracy | Eval Accuracy | Eval Spoof Precision | Eval Spoof Recall | Eval Spoof F1 |
-|---|---|---:|---:|---:|---:|---:|---:|
-| Random Forest | MFCC statistics | 0.9100 | 0.9040 | 0.8840 | 0.9257 | 0.8350 | 0.8780 |
-| PyTorch MLP | MFCC statistics | 0.9875 | 0.8955 | 0.8665 | 0.8920 | 0.8340 | 0.8620 |
-| Spectrogram CNN | Mel spectrogram | 0.9925 | 0.9815 | 0.9175 | 0.9815 | 0.8510 | 0.9116 |
+
+| Model           | Feature Type    | Train Split Accuracy | Dev Accuracy | Eval Accuracy | Eval Spoof Precision | Eval Spoof Recall | Eval Spoof F1 |
+| --------------- | --------------- | -------------------- | ------------ | ------------- | -------------------- | ----------------- | ------------- |
+| Random Forest   | MFCC statistics | 0.9100               | 0.9040       | 0.8840        | 0.9257               | 0.8350            | 0.8780        |
+| PyTorch MLP     | MFCC statistics | 0.9875               | 0.8955       | 0.8665        | 0.8920               | 0.8340            | 0.8620        |
+| Spectrogram CNN | Mel spectrogram | 0.9925               | 0.9815       | 0.9175        | 0.9815               | 0.8510            | 0.9116        |
+
 
 The Spectrogram CNN achieved the strongest overall performance across the train split, dev subset, and eval subset.
 
@@ -200,21 +204,42 @@ The MLP achieved a very high initial train split score, but its performance drop
 
 However, the CNN eval spoof recall was 0.8510, which means some spoofed samples were still missed. This is important for security-related systems because missing spoofed audio can be riskier than raising a false alarm.
 
+### Automated Model Comparison
+
+The project also includes an automated comparison script that summarizes the train, dev, and eval results across all models.
+
+Command:
+
+`python -m src.evaluation.compare_results`
+
+This script generates:
+
+- `results/metrics/model_comparison.csv`
+- `results/metrics/model_comparison.json`
+- `results/figures/model_accuracy_comparison.png`
+- `results/figures/eval_spoof_metrics_comparison.png`
+
+Model Accuracy Comparison
+
+Eval Spoof Metrics Comparison
+
+---
+
 ### Dev Set Confusion Matrices
 
-![Random Forest Dev Confusion Matrix](results/figures/random_forest_dev_confusion_matrix.png)
+Random Forest Dev Confusion Matrix
 
-![PyTorch MLP Dev Confusion Matrix](results/figures/mlp_dev_confusion_matrix.png)
+PyTorch MLP Dev Confusion Matrix
 
-![CNN Dev Confusion Matrix](results/figures/cnn_dev_confusion_matrix.png)
+CNN Dev Confusion Matrix
 
 ### Eval Set Confusion Matrices
 
-![Random Forest Eval Confusion Matrix](results/figures/random_forest_eval_confusion_matrix.png)
+Random Forest Eval Confusion Matrix
 
-![PyTorch MLP Eval Confusion Matrix](results/figures/mlp_eval_confusion_matrix.png)
+PyTorch MLP Eval Confusion Matrix
 
-![CNN Eval Confusion Matrix](results/figures/cnn_eval_confusion_matrix.png)
+CNN Eval Confusion Matrix
 
 ---
 
@@ -222,7 +247,7 @@ However, the CNN eval spoof recall was 0.8510, which means some spoofed samples 
 
 The Random Forest baseline achieved strong initial performance using MFCC-based statistical features.
 
-![Random Forest Confusion Matrix](results/figures/random_forest_confusion_matrix.png)
+Random Forest Confusion Matrix
 
 ---
 
@@ -230,13 +255,13 @@ The Random Forest baseline achieved strong initial performance using MFCC-based 
 
 The PyTorch MLP achieved strong train split performance using MFCC-based statistical features.
 
-![MLP Confusion Matrix](results/figures/mlp_confusion_matrix.png)
+MLP Confusion Matrix
 
 ### Training Curves
 
-![MLP Training Loss](results/figures/mlp_training_loss.png)
+MLP Training Loss
 
-![MLP Test Accuracy](results/figures/mlp_test_accuracy.png)
+MLP Test Accuracy
 
 ---
 
@@ -250,28 +275,32 @@ The CNN achieved the best overall performance in this project.
 
 ### CNN Train Split Result
 
-| Metric | Value |
-|---|---:|
-| Best epoch | 19 |
-| Train split validation accuracy | 0.9925 |
-| Spoof precision | 0.9900 |
-| Spoof recall | 0.9950 |
-| Spoof F1 | 0.9925 |
 
-![CNN Confusion Matrix](results/figures/cnn_confusion_matrix.png)
+| Metric                          | Value  |
+| ------------------------------- | ------ |
+| Best epoch                      | 19     |
+| Train split validation accuracy | 0.9925 |
+| Spoof precision                 | 0.9900 |
+| Spoof recall                    | 0.9950 |
+| Spoof F1                        | 0.9925 |
+
+
+CNN Confusion Matrix
 
 ### CNN Training Curves
 
-![CNN Training Loss](results/figures/cnn_training_loss.png)
+CNN Training Loss
 
-![CNN Validation Accuracy](results/figures/cnn_validation_accuracy.png)
+CNN Validation Accuracy
 
 ### CNN Dev and Eval Results
 
+
 | Split | Accuracy | Spoof Precision | Spoof Recall | Spoof F1 |
-|---|---:|---:|---:|---:|
-| Dev | 0.9815 | 0.9725 | 0.9910 | 0.9817 |
-| Eval | 0.9175 | 0.9815 | 0.8510 | 0.9116 |
+| ----- | -------- | --------------- | ------------ | -------- |
+| Dev   | 0.9815   | 0.9725          | 0.9910       | 0.9817   |
+| Eval  | 0.9175   | 0.9815          | 0.8510       | 0.9116   |
+
 
 The CNN generalized better than the MFCC-based MLP on the dev and eval subsets. This suggests that mel spectrogram representations captured useful time-frequency patterns for spoof detection.
 
@@ -402,7 +431,6 @@ Audio Deepfake Prediction
 ============================================================
 Audio file: data\raw\ASVspoof2019_LA_train\flac\LA_T_1138215.flac
 Model     : rf
-
 Prediction: bonafide
 Confidence: 0.5650
 
