@@ -2,12 +2,13 @@
 
 A machine learning project for detecting synthetic / spoofed speech using the ASVspoof 2019 Logical Access dataset.
 
-This project compares a traditional machine learning baseline with a PyTorch neural network baseline:
+This project compares three different audio deepfake detection approaches:
 
-- Random Forest classifier
-- PyTorch Multi-Layer Perceptron (MLP)
+- Random Forest classifier with MFCC-based statistical features
+- PyTorch Multi-Layer Perceptron (MLP) with MFCC-based statistical features
+- PyTorch CNN with mel spectrogram features
 
-The goal is to build a clean and reproducible audio deepfake detection pipeline using MFCC-based audio features.
+The goal is to build a clean and reproducible audio deepfake detection pipeline, starting from raw audio files and ending with model evaluation and single-audio prediction.
 
 ---
 
@@ -26,9 +27,10 @@ The pipeline follows these steps:
 Raw FLAC audio
 → ASVspoof protocol parsing
 → balanced subset creation
-→ MFCC + delta + delta-delta feature extraction
+→ MFCC / mel spectrogram feature extraction
 → model training
-→ evaluation and comparison
+→ dev and eval evaluation
+→ single audio prediction
 ```
 
 ---
@@ -46,11 +48,19 @@ data/
 └── raw/
     ├── ASVspoof2019_LA_train/
     │   └── flac/
+    ├── ASVspoof2019_LA_dev/
+    │   └── flac/
+    ├── ASVspoof2019_LA_eval/
+    │   └── flac/
     └── ASVspoof2019_LA_cm_protocols/
-        └── ASVspoof2019.LA.cm.train.trn.txt
+        ├── ASVspoof2019.LA.cm.train.trn.txt
+        ├── ASVspoof2019.LA.cm.dev.trl.txt
+        └── ASVspoof2019.LA.cm.eval.trl.txt
 ```
 
-The project currently uses a balanced subset:
+For this experiment, balanced subsets were created from train, dev, and eval splits.
+
+Each balanced subset contains:
 
 ```text
 1000 bonafide samples
@@ -66,28 +76,37 @@ Before training the models, the dataset was explored visually using a balanced s
 
 ### Balanced Subset Distribution
 
-The original ASVspoof 2019 LA training split is imbalanced, with many more spoof samples than bonafide samples.  
+The original ASVspoof 2019 LA training split is imbalanced, with many more spoof samples than bonafide samples.
+
 For this baseline experiment, a balanced subset was created with 1,000 bonafide and 1,000 spoof samples.
 
-Balanced Subset Label Distribution
+![Balanced Subset Label Distribution](results/figures/label_distribution_subset.png)
 
 ### Bonafide vs Spoof Waveform
 
-The waveform shows how the audio amplitude changes over time.  
+The waveform shows how the audio amplitude changes over time.
+
 Below is a comparison between one bonafide sample and one spoof sample from the balanced subset.
 
-Bonafide vs Spoof Waveform
+![Bonafide vs Spoof Waveform](results/figures/bonafide_vs_spoof_waveform.png)
 
 ### Bonafide vs Spoof Mel Spectrogram
 
-The mel spectrogram shows how frequency energy changes over time.  
+The mel spectrogram shows how frequency energy changes over time.
+
 This representation is useful for audio analysis because it reveals time-frequency patterns that may not be obvious from the raw waveform.
 
-Bonafide vs Spoof Mel Spectrogram
+![Bonafide vs Spoof Mel Spectrogram](results/figures/bonafide_vs_spoof_mel_spectrogram.png)
+
+---
 
 ## Feature Extraction
 
-For each audio file, the following features are extracted:
+This project uses two feature extraction approaches.
+
+### MFCC-Based Statistical Features
+
+For each audio file, the following MFCC-based features are extracted:
 
 - MFCC mean
 - MFCC standard deviation
@@ -102,18 +121,46 @@ With `20 MFCCs`, this produces a 120-dimensional feature vector:
 20 + 20 + 20 + 20 + 20 + 20 = 120 features
 ```
 
+These features are used by:
+
+- Random Forest
+- PyTorch MLP
+
+### Mel Spectrogram Features
+
+For the CNN model, each audio file is converted into a fixed-size mel spectrogram tensor.
+
+The CNN input shape is:
+
+```text
+1 x 128 x 128
+```
+
+This means:
+
+```text
+1 channel
+128 mel frequency bins
+128 time frames
+```
+
+These features are used by:
+
+- Spectrogram CNN
+
 ---
 
 ## Model Results
 
-The models were trained and evaluated on a balanced 2,000-sample subset of ASVspoof 2019 LA.
+The models were first trained and evaluated using a balanced 2,000-sample train subset with an 80/20 train-validation split.
 
+| Model | Feature Type | Train Split Accuracy | Spoof Precision | Spoof Recall | Spoof F1 |
+|---|---|---:|---:|---:|---:|
+| Random Forest | MFCC statistics | 0.9100 | 0.9409 | 0.8750 | 0.9067 |
+| PyTorch MLP | MFCC statistics | 0.9875 | 0.9899 | 0.9850 | 0.9875 |
+| Spectrogram CNN | Mel spectrogram | 0.9925 | 0.9900 | 0.9950 | 0.9925 |
 
-| Model         | Accuracy | Spoof Precision | Spoof Recall | Spoof F1 |
-| ------------- | -------- | --------------- | ------------ | -------- |
-| Random Forest | 0.9100   | 0.9409          | 0.8750       | 0.9067   |
-| PyTorch MLP   | 0.9875   | 0.9899          | 0.9850       | 0.9875   |
-
+The Spectrogram CNN achieved the strongest initial train split result.
 
 ---
 
@@ -141,58 +188,94 @@ Total: 2000 eval samples
 
 ### Train Split vs Dev vs Eval Results
 
+| Model | Feature Type | Train Split Accuracy | Dev Accuracy | Eval Accuracy | Eval Spoof Precision | Eval Spoof Recall | Eval Spoof F1 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Random Forest | MFCC statistics | 0.9100 | 0.9040 | 0.8840 | 0.9257 | 0.8350 | 0.8780 |
+| PyTorch MLP | MFCC statistics | 0.9875 | 0.8955 | 0.8665 | 0.8920 | 0.8340 | 0.8620 |
+| Spectrogram CNN | Mel spectrogram | 0.9925 | 0.9815 | 0.9175 | 0.9815 | 0.8510 | 0.9116 |
 
-| Model         | Train Split Accuracy | Dev Accuracy | Eval Accuracy | Eval Spoof Precision | Eval Spoof Recall | Eval Spoof F1 |
-| ------------- | -------------------- | ------------ | ------------- | -------------------- | ----------------- | ------------- |
-| Random Forest | 0.9100               | 0.9040       | 0.8840        | 0.9257               | 0.8350            | 0.8780        |
-| PyTorch MLP   | 0.9875               | 0.8955       | 0.8665        | 0.8920               | 0.8340            | 0.8620        |
+The Spectrogram CNN achieved the strongest overall performance across the train split, dev subset, and eval subset.
 
+The MLP achieved a very high initial train split score, but its performance dropped more on the dev and eval subsets. The Random Forest baseline remained relatively stable, while the CNN improved the overall results by learning from mel spectrogram representations instead of only handcrafted MFCC statistics.
 
-The PyTorch MLP achieved the highest train split accuracy, but its performance dropped more on the dev and eval subsets.
-
-The Random Forest model showed more stable generalization across splits. Its train split accuracy was 0.9100, dev accuracy was 0.9040, and eval accuracy was 0.8840.
-
-This comparison is important because the first train/test split result alone could make the MLP look clearly better. However, the dev and eval results show that the simpler Random Forest baseline generalized more consistently in this experiment.
+However, the CNN eval spoof recall was 0.8510, which means some spoofed samples were still missed. This is important for security-related systems because missing spoofed audio can be riskier than raising a false alarm.
 
 ### Dev Set Confusion Matrices
 
-Random Forest Dev Confusion Matrix
+![Random Forest Dev Confusion Matrix](results/figures/random_forest_dev_confusion_matrix.png)
 
-PyTorch MLP Dev Confusion Matrix
+![PyTorch MLP Dev Confusion Matrix](results/figures/mlp_dev_confusion_matrix.png)
+
+![CNN Dev Confusion Matrix](results/figures/cnn_dev_confusion_matrix.png)
 
 ### Eval Set Confusion Matrices
 
-Random Forest Eval Confusion Matrix
+![Random Forest Eval Confusion Matrix](results/figures/random_forest_eval_confusion_matrix.png)
 
-PyTorch MLP Eval Confusion Matrix
+![PyTorch MLP Eval Confusion Matrix](results/figures/mlp_eval_confusion_matrix.png)
 
-### Interpretation
+![CNN Eval Confusion Matrix](results/figures/cnn_eval_confusion_matrix.png)
 
-The MLP performed extremely well on the initial train split, but its performance decreased on unseen dev and eval subsets. This may indicate that the model learned patterns that were highly effective on the initial balanced subset but less stable across different ASVspoof splits.
-
-The Random Forest model did not reach the highest initial accuracy, but it remained more consistent across train, dev, and eval subsets.
-
-This is why evaluating only on a single train/test split is not enough. Dev and eval results provide a more realistic picture of how the detector behaves on unseen data.
+---
 
 ## Random Forest Result
 
 The Random Forest baseline achieved strong initial performance using MFCC-based statistical features.
 
-Random Forest Confusion Matrix
+![Random Forest Confusion Matrix](results/figures/random_forest_confusion_matrix.png)
 
 ---
 
 ## PyTorch MLP Result
 
-The PyTorch MLP achieved the best performance in this experiment.
+The PyTorch MLP achieved strong train split performance using MFCC-based statistical features.
 
-MLP Confusion Matrix
+![MLP Confusion Matrix](results/figures/mlp_confusion_matrix.png)
 
 ### Training Curves
 
-MLP Training Loss
+![MLP Training Loss](results/figures/mlp_training_loss.png)
 
-MLP Test Accuracy
+![MLP Test Accuracy](results/figures/mlp_test_accuracy.png)
+
+---
+
+## Spectrogram CNN Result
+
+To extend the project beyond MFCC-based models, I added a CNN model trained on fixed-size mel spectrogram features.
+
+Unlike Random Forest and MLP, which use handcrafted MFCC statistics, the CNN learns directly from time-frequency representations of the audio signal.
+
+The CNN achieved the best overall performance in this project.
+
+### CNN Train Split Result
+
+| Metric | Value |
+|---|---:|
+| Best epoch | 19 |
+| Train split validation accuracy | 0.9925 |
+| Spoof precision | 0.9900 |
+| Spoof recall | 0.9950 |
+| Spoof F1 | 0.9925 |
+
+![CNN Confusion Matrix](results/figures/cnn_confusion_matrix.png)
+
+### CNN Training Curves
+
+![CNN Training Loss](results/figures/cnn_training_loss.png)
+
+![CNN Validation Accuracy](results/figures/cnn_validation_accuracy.png)
+
+### CNN Dev and Eval Results
+
+| Split | Accuracy | Spoof Precision | Spoof Recall | Spoof F1 |
+|---|---:|---:|---:|---:|
+| Dev | 0.9815 | 0.9725 | 0.9910 | 0.9817 |
+| Eval | 0.9175 | 0.9815 | 0.8510 | 0.9116 |
+
+The CNN generalized better than the MFCC-based MLP on the dev and eval subsets. This suggests that mel spectrogram representations captured useful time-frequency patterns for spoof detection.
+
+Still, the eval spoof recall was lower than the dev spoof recall. This shows that the eval subset was more challenging and that the model can still be improved.
 
 ---
 
@@ -220,37 +303,63 @@ pip install -r requirements.txt
 
 ## How to Run
 
+After the source code refactor, scripts are run as Python modules from the project root.
+
 ### 1. Check dataset structure
 
 ```bash
-python src/check_dataset.py
+python -m src.data.check_dataset
+python -m src.data.check_dev_dataset
+python -m src.data.check_eval_dataset
 ```
 
-### 2. Create balanced subset
+### 2. Create balanced subsets
 
 ```bash
-python src/make_subset.py
+python -m src.data.make_subset
+python -m src.data.make_dev_subset
+python -m src.data.make_eval_subset
 ```
 
-### 3. Extract audio features
+### 3. Extract MFCC-based features
 
 ```bash
-python src/extract_features.py
+python -m src.features.extract_features
+python -m src.features.extract_dev_features
+python -m src.features.extract_eval_features
 ```
 
-### 4. Train Random Forest baseline
+### 4. Extract mel spectrogram features for CNN
 
 ```bash
-python src/train_random_forest.py
+python -m src.features.extract_mel_features --split train
+python -m src.features.extract_mel_features --split dev
+python -m src.features.extract_mel_features --split eval
 ```
 
-### 5. Train PyTorch MLP baseline
+You can also process all splits with:
 
 ```bash
-python src/train_mlp.py
+python -m src.features.extract_mel_features --split all
 ```
 
-### 6. Predict a single audio file
+### 5. Train models
+
+```bash
+python -m src.models.train_random_forest
+python -m src.models.train_mlp
+python -m src.models.train_cnn
+```
+
+### 6. Evaluate models
+
+```bash
+python -m src.evaluation.evaluate_on_dev
+python -m src.evaluation.evaluate_on_eval
+python -m src.evaluation.evaluate_cnn_on_dev_eval
+```
+
+### 7. Predict a single audio file
 
 After training the models, you can use the prediction script to classify a single audio file as `bonafide` or `spoof`.
 
@@ -259,7 +368,7 @@ After training the models, you can use the prediction script to classify a singl
 Using the PyTorch MLP model:
 
 ```bash
-python src/predict_audio.py "data/raw/ASVspoof2019_LA_train/flac/LA_T_1138215.flac" --model mlp
+python -m src.models.predict_audio "data/raw/ASVspoof2019_LA_train/flac/LA_T_1138215.flac" --model mlp
 ```
 
 Example output:
@@ -282,7 +391,7 @@ spoof   : 0.0000
 Using the Random Forest model:
 
 ```bash
-python src/predict_audio.py "data/raw/ASVspoof2019_LA_train/flac/LA_T_1138215.flac" --model rf
+python -m src.models.predict_audio "data/raw/ASVspoof2019_LA_train/flac/LA_T_1138215.flac" --model rf
 ```
 
 Example output:
@@ -307,7 +416,7 @@ spoof   : 0.4350
 Using the PyTorch MLP model:
 
 ```bash
-python src/predict_audio.py "data/raw/ASVspoof2019_LA_train/flac/LA_T_9334813.flac" --model mlp
+python -m src.models.predict_audio "data/raw/ASVspoof2019_LA_train/flac/LA_T_9334813.flac" --model mlp
 ```
 
 Example output:
@@ -330,7 +439,7 @@ spoof   : 1.0000
 Using the Random Forest model:
 
 ```bash
-python src/predict_audio.py "data/raw/ASVspoof2019_LA_train/flac/LA_T_9334813.flac" --model rf
+python -m src.models.predict_audio "data/raw/ASVspoof2019_LA_train/flac/LA_T_9334813.flac" --model rf
 ```
 
 Example output:
@@ -372,14 +481,43 @@ asvspoof-audio-deepfake-detector/
 │   └── 01_audio_exploration.ipynb
 │
 ├── src/
+│   ├── __init__.py
 │   ├── config.py
-│   ├── check_dataset.py
-│   ├── make_subset.py
-│   ├── extract_features.py
-│   ├── train_random_forest.py
-│   ├── train_mlp.py
-│   ├── evaluate.py
-│   └── utils.py
+│   ├── utils.py
+│   │
+│   ├── data/
+│   │   ├── __init__.py
+│   │   ├── check_dataset.py
+│   │   ├── check_dev_dataset.py
+│   │   ├── check_eval_dataset.py
+│   │   ├── make_subset.py
+│   │   ├── make_dev_subset.py
+│   │   └── make_eval_subset.py
+│   │
+│   ├── features/
+│   │   ├── __init__.py
+│   │   ├── extract_features.py
+│   │   ├── extract_dev_features.py
+│   │   ├── extract_eval_features.py
+│   │   └── extract_mel_features.py
+│   │
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── train_random_forest.py
+│   │   ├── train_mlp.py
+│   │   ├── train_cnn.py
+│   │   └── predict_audio.py
+│   │
+│   ├── evaluation/
+│   │   ├── __init__.py
+│   │   ├── compare_results.py
+│   │   ├── evaluate_on_dev.py
+│   │   ├── evaluate_on_eval.py
+│   │   └── evaluate_cnn_on_dev_eval.py
+│   │
+│   └── visualization/
+│       ├── __init__.py
+│       └── create_eda_figures.py
 │
 ├── models/
 │
@@ -392,28 +530,25 @@ asvspoof-audio-deepfake-detector/
 
 ## Limitations
 
-This project is currently a baseline experiment.
+This project is a learning-focused baseline experiment, not a production-ready spoof detection system.
 
 Important limitations:
 
-- The reported results are based on a balanced 2,000-sample subset, not the full ASVspoof benchmark.
-- The models use handcrafted MFCC-based features instead of raw waveform learning.
-- Evaluation is performed using a train/test split from the training partition.
-- The current version does not yet evaluate on the official ASVspoof dev or eval partitions.
+- The reported results are based on balanced 2,000-sample subsets, not the full ASVspoof benchmark.
+- Dev and eval results are based on balanced subsets, not full official ASVspoof scoring.
+- The project reports accuracy, precision, recall, and F1, but does not yet report official ASVspoof metrics such as EER or t-DCF.
+- The CNN improves generalization, but the eval spoof recall is still not perfect.
 - The model has not yet been tested against adversarial audio attacks.
 
 ---
 
-## Next Steps
+## Planned Improvements
 
-Planned improvements:
-
-- Add CNN-based spectrogram model
 - Add raw-audio model baseline
 - Implement adversarial attacks such as FGSM
 - Add adversarial training defense
-- Add inference script for single audio prediction
-- Write a technical Medium article explaining the pipeline
+- Evaluate robustness under noise and audio transformations
+- Write a follow-up article about adversarial audio attacks
 
 ---
 
